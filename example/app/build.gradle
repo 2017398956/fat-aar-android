@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
@@ -19,7 +19,8 @@ android {
 
         externalNativeBuild {
             ndk {
-                abiFilters "armeabi-v7a"
+//                abiFilters "armeabi-v7a"
+                abiFilters "arm64-v8a"
             }
         }
     }
@@ -38,6 +39,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    namespace 'com.fataar.demo'
 }
 
 repositories {
@@ -50,4 +52,5 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation('androidx.appcompat:appcompat:1.2.0')
     implementation(name: 'fat-aar-final', ext: 'aar')
+//    implementation(project(':lib-main'))
 }

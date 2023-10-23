@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.kezong.fat-aar'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android-extensions'
 
 repositories {
     flatDir {
@@ -15,8 +15,6 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0.0"
     }
 
     buildTypes {
@@ -42,15 +40,19 @@ android {
         exclude 'lib/x86/*.so'
         exclude 'lib/x86_64/*.so'
         exclude 'lib/armeabi/*.so'
-        exclude 'lib/arm64-v8a/*.so'
+        exclude 'lib/armeabi-v7a/*.so'
+//        exclude 'lib/arm64-v8a/*.so'
     }
+    namespace 'com.kezong.demo.lib'
 }
 
 afterEvaluate {
+    logger.info("lib-main:%s", "afterEvaluate")
     // for app test, copy the final aar to application libs
     android.libraryVariants.all { variant ->
         File outputFile = variant.outputs.first().outputFile
         tasks.named("assemble${variant.name.capitalize()}").configure {
+            logger.info("lib-main:%s", "variant.name:${variant.name},and task name:assemble${variant.name.capitalize()}")
             doLast {
                 copy {
                     from outputFile
@@ -58,6 +60,7 @@ afterEvaluate {
                     rename outputFile.name, "fat-aar-final.aar"
                 }
             }
+            logger.info("lib-main:%s", "copy aar from ${outputFile.getAbsolutePath()} to ${rootDir.getAbsolutePath()}/app/libs/fat-aar-final.aar")
         }
     }
 }

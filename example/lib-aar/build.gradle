@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
@@ -8,8 +8,6 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
         consumerProguardFiles 'proguard-rules.pro'
     }
 
@@ -36,6 +34,7 @@ android {
 
         }
     }
+    namespace 'com.kezong.demo.libaar'
 }
 
 android.libraryVariants.all { variant ->
