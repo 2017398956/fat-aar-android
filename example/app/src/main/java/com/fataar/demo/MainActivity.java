@@ -29,7 +29,7 @@ import com.kezong.demo.lib.MainLibClass;
 import com.kezong.demo.lib.KotlinInMain;
 import com.kezong.demo.libaar.AarFlavor;
 import com.kezong.demo.libaar.AarLibClass;
-import com.kezong.demo.libaar.KotlinTest2;
+import com.kezong.demo.libaar.KotlinTest;
 import com.kezong.demo.libaar.TestActivity;
 import com.kezong.demo.libaar2.Aar2LibClass;
 import com.kezong.demo.libaarlocal.AarLocalLibClass;
@@ -157,7 +157,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void testKotlinTopLevel2() {
-        String text = String.valueOf(KotlinTest2.test2());
+        String text = String.valueOf(KotlinTest.test2());
         addTestView("kotlin2", text, TextUtils.equals(text, "130"));
     }
 

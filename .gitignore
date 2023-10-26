@@ -9,3 +9,5 @@ obj/
 Gemfile.lock
 _site/
 lib/
+*.hprof
+repo/

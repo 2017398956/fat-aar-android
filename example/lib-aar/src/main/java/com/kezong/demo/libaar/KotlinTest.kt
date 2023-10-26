@@ -1,4 +1,4 @@
-@file:JvmName("KotlinTest2")
+@file:JvmName("KotlinTest")
 package com.kezong.demo.libaar
 
 fun test2() : Int {

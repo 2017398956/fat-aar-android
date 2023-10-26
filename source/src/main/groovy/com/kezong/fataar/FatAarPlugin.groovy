@@ -7,6 +7,7 @@ import org.gradle.api.ProjectConfigurationException
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ResolvedArtifact
 import org.gradle.api.artifacts.ResolvedDependency
+import org.gradle.api.provider.MapProperty
 
 /**
  * plugin entry
@@ -27,6 +28,8 @@ class FatAarPlugin implements Plugin<Project> {
 
     private final Collection<Configuration> embedConfigurations = new ArrayList<>()
 
+    private MapProperty<String, List<AndroidArchiveLibrary>> variantPackagesProperty;
+
     @Override
     void apply(Project project) {
         this.project = project
@@ -42,12 +45,18 @@ class FatAarPlugin implements Plugin<Project> {
     }
 
     private registerTransform() {
-        transform = new RClassesTransform(project)
-        // register in project.afterEvaluate is invalid.
-        project.android.registerTransform(transform)
+        variantPackagesProperty = project.objects.mapProperty(String.class, List.class)
+        if (FatUtils.compareVersion(VersionAdapter.AGPVersion, "8.0.0") >= 0) {
+            FatAarPluginHelper.registerAsmTransformation(project, variantPackagesProperty)
+        } else {
+            transform = new RClassesTransform(project)
+            // register in project.afterEvaluate is invalid.
+            project.android.registerTransform(transform)
+        }
     }
 
     private void doAfterEvaluate() {
+        FatUtils.logAnytime("doAfterEvaluate")
         embedConfigurations.each {
             if (project.fataar.transitive) {
                 it.transitive = true
@@ -70,7 +79,7 @@ class FatAarPlugin implements Plugin<Project> {
             }
 
             if (!artifacts.isEmpty()) {
-                def processor = new VariantProcessor(project, variant)
+                def processor = new VariantProcessor(project, variant, variantPackagesProperty)
                 processor.processVariant(artifacts, firstLevelDependencies, transform)
             }
         }
@@ -79,26 +88,26 @@ class FatAarPlugin implements Plugin<Project> {
     private void createConfigurations() {
         Configuration embedConf = project.configurations.create(CONFIG_NAME)
         createConfiguration(embedConf)
-        FatUtils.logInfo("Creating configuration embed")
+        FatUtils.logAnytime("Creating configuration embed")
 
         project.android.buildTypes.all { buildType ->
             String configName = buildType.name + CONFIG_SUFFIX
             Configuration configuration = project.configurations.create(configName)
             createConfiguration(configuration)
-            FatUtils.logInfo("Creating configuration " + configName)
+            FatUtils.logAnytime("Creating configuration " + configName)
         }
 
         project.android.productFlavors.all { flavor ->
             String configName = flavor.name + CONFIG_SUFFIX
             Configuration configuration = project.configurations.create(configName)
             createConfiguration(configuration)
-            FatUtils.logInfo("Creating configuration " + configName)
+            FatUtils.logAnytime("Creating configuration " + configName)
             project.android.buildTypes.all { buildType ->
                 String variantName = flavor.name + buildType.name.capitalize()
                 String variantConfigName = variantName + CONFIG_SUFFIX
                 Configuration variantConfiguration = project.configurations.create(variantConfigName)
                 createConfiguration(variantConfiguration)
-                FatUtils.logInfo("Creating configuration " + variantConfigName)
+                FatUtils.logAnytime("Creating configuration " + variantConfigName)
             }
         }
     }

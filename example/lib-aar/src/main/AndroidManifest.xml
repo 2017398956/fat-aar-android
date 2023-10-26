@@ -6,6 +6,11 @@
     <application>
         <activity
             android:name="com.kezong.demo.libaar.TestActivity"
+            android:exported="false"
             />
+        <!--设置多渠道-->
+        <meta-data
+            android:name="channel"
+            android:value="${CHANNEL}" />
     </application>
 </manifest>

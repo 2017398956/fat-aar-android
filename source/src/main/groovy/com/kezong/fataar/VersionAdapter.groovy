@@ -143,9 +143,14 @@ class VersionAdapter {
             Field version = aClass.getDeclaredField("ANDROID_GRADLE_PLUGIN_VERSION")
             return version.get(aClass)
         } catch (Throwable ignore) {
-            Class aClass = Class.forName("com.android.builder.model.Version")
-            Field version = aClass.getDeclaredField("ANDROID_GRADLE_PLUGIN_VERSION")
-            return version.get(aClass)
+            try {
+                Class aClass = Class.forName("com.android.builder.model.Version")
+                Field version = aClass.getDeclaredField("ANDROID_GRADLE_PLUGIN_VERSION")
+                return version.get(aClass)
+            } catch (Exception exception) {
+                exception.printStackTrace()
+                throw RuntimeException("fat aar can not get the version number of AGP.")
+            }
         }
     }
 }

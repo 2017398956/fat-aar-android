@@ -36,6 +36,11 @@ class EmbedResolutionListener implements DependencyResolutionListener {
     @Override
     void beforeResolve(ResolvableDependencies resolvableDependencies) {
         configuration.dependencies.each { dependency ->
+            FatUtils.logAnytime("configuration.name: "
+                    + configuration.name
+                    + " , dependency:"
+                    + dependency
+            )
             if (dependency instanceof DefaultProjectDependency) {
                 if (dependency.targetConfiguration == null) {
                     dependency.targetConfiguration = "default"

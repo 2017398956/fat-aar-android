@@ -1,13 +1,14 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+//apply plugin: 'kotlin-kapt'
 //apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 29
+    compileSdk 33
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 33
         consumerProguardFiles 'proguard-rules.pro'
     }
 
@@ -19,20 +20,45 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
+        dataBinding true
     }
 
-    flavorDimensions "default"
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+    }
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//    }
+    kotlin {
+        jvmToolchain(17)
+    }
+
+//    setFlavorDimensions(["default", "default2"])
+
+    setFlavorDimensions(["default"])
 
     productFlavors {
 
         flavor1 {
-
+            manifestPlaceholders = [CHANNEL: 'flavor1']
+            dimension = "default"
         }
 
         flavor2 {
-
+            manifestPlaceholders = [CHANNEL: "flavor2"]
+            dimension = "default"
         }
+
+//        flavor5 {
+//            manifestPlaceholders = [CHANNEL: 'flavor5']
+//            dimension = "default2"
+//        }
+//
+//        flavor6 {
+//            manifestPlaceholders = [CHANNEL: "flavor6"]
+//            dimension = "default2"
+//        }
     }
     namespace 'com.kezong.demo.libaar'
 }
@@ -45,4 +71,9 @@ android.libraryVariants.all { variant ->
 
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    kapt('androidx.databinding:databinding-ktx:8.1.2')
+//    kapt('androidx.databinding:databinding-compiler:8.1.2')
+//    kapt('androidx.databinding:compiler:3.2.0-alpha11')
+//    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.4.2"
 }
