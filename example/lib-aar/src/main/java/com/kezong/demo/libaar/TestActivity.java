@@ -14,10 +14,13 @@ public class TestActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.databinding);
-        User user = new User();
-        user.setName("Hello World");
-        user.setSex("[success][dataBinding] male");
-        binding.setUser(user);
+        setContentView(R.layout.test_layout);
+        findViewById(R.id.ll_test).setBackgroundResource(R.color.lib_aar_red);
+//        binding = DataBindingUtil.setContentView(this, R.layout.databinding);
+//        binding.getRoot().setBackgroundResource(R.color.lib_aar_red);
+//        User user = new User();
+//        user.setName("Hello World");
+//        user.setSex("[success][dataBinding] male");
+//        binding.setUser(user);
     }
 }

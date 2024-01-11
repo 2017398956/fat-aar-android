@@ -188,6 +188,9 @@ public class MainActivity extends FragmentActivity {
 
     public void addTestView(String title, String text, boolean success) {
         TextView textView = new TextView(this);
+        if ("main class".equals(title)) {
+//            textView.setBackgroundResource(R.color.colorAccent);
+        }
         String s;
         if (success) {
             s = "[Success] " + "[" + title + "] " + text;

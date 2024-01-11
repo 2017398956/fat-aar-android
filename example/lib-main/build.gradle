@@ -65,7 +65,7 @@ afterEvaluate {
             doLast {
                 copy {
                     from outputFile
-                    into "../app/libs"
+                    into "../final-aar"
                     rename outputFile.name, "fat-aar-final.aar"
                 }
             }
@@ -96,7 +96,8 @@ dependencies {
     // local full aar dependency, just build in flavor1
     flavor1Embed project(path: ':lib-aar-local', configuration: 'default')
     // local full aar dependency, just build in debug
-    debugEmbed (name:'lib-aar-local2', ext:'aar')
+    // debugEmbed (name:'lib-aar-local2', ext:'aar')
+    embed (name:'lib-aar-local2', ext: 'aar')
     // remote dependency
     embed 'com.google.guava:guava:20.0'
     // remote aar dependency
